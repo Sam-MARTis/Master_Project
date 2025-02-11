@@ -12,8 +12,8 @@ const VELOCITY_SCALE = 650;
 
 let canvas: any;
 let pathCanvas: any;
-let ctx: ctxObject;
-let pathCtx: ctxObject;
+let ctx: CanvasRenderingContext2D;
+let pathCtx: CanvasRenderingContext2D;
 let doublePendulum: DoublePendulum;
 let t1but: HTMLInputElement ;
 let t2but: HTMLInputElement ;
@@ -51,8 +51,8 @@ class DoublePendulum {
   previousX: number;
   previousY: number;
   canvas: any;
-  ctx: ctxObject;
-  pathCtx: ctxObject;
+  ctx: CanvasRenderingContext2D;
+  pathCtx: CanvasRenderingContext2D;
 
   meterToPixel: number = 100;
   constructor(
@@ -66,9 +66,9 @@ class DoublePendulum {
     length2: number,
     gravity: number = 9.81,
     meterToPixel: number = 100,
-    canvas: any,
-    ctx: ctxObject,
-    pathCtx: ctxObject
+    canvas: HTMLCanvasElement,
+    ctx: CanvasRenderingContext2D,
+    pathCtx: CanvasRenderingContext2D
   ) {
     // console.log("Double Pendulum created");
     this.theta1 = theta1;
@@ -214,15 +214,15 @@ class DoublePendulum {
     this.pathCtx.beginPath();
     this.pathCtx.moveTo(
       this.canvas.width / 2 + this.previousX,
-      this.canvas.height / 2 + this.previousY
+      this.canvas.height / 4 + this.previousY
     );
 
-    this.ctx.moveTo(this.canvas.width / 2, this.canvas.height / 2);
-    this.ctx.lineTo(this.canvas.width / 2 + x1, this.canvas.height / 2 + y1);
-    this.ctx.lineTo(this.canvas.width / 2 + x2, this.canvas.height / 2 + y2);
+    this.ctx.moveTo(this.canvas.width / 2, this.canvas.height / 4);
+    this.ctx.lineTo(this.canvas.width / 2 + x1, this.canvas.height / 4 + y1);
+    this.ctx.lineTo(this.canvas.width / 2 + x2, this.canvas.height / 4 + y2);
     this.pathCtx.lineTo(
       this.canvas.width / 2 + x2,
-      this.canvas.height / 2 + y2
+      this.canvas.height / 4 + y2
     );
     let vel = Math.exp(
       -Math.sqrt((this.previousX - x2) ** 2 + (this.previousY - y2) ** 2) /
@@ -308,11 +308,14 @@ const newValuesHandler = (): void => {
 };
 
 const init = (): void => {
-  canvas = document.getElementById("DoublePendulumCanvas");
+  
+  canvas = document.getElementById("DoublePendulumCanvas") as HTMLCanvasElement;
   pathCanvas = document.getElementById("DoublePendulumPathCanvas");
   ctx = canvas.getContext("2d");
+  
+  
   pathCtx = pathCanvas.getContext("2d");
-  pathCtx.strokeWidth = 1;
+  pathCtx.lineWidth = 1;
   pathCtx.scale(devicePixelRatio, devicePixelRatio);
   canvas.width = window.innerWidth * devicePixelRatio;
   canvas.height = window.innerHeight * devicePixelRatio;
@@ -365,6 +368,8 @@ const init = (): void => {
     newValuesHandler();
   });
 };
+
+
 
 const main = (doublePendulum: DoublePendulum): void => {
   for (let i = 0; i < ACCURACY_MULTIPLIER; i++){
