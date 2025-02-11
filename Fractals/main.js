@@ -17,7 +17,7 @@ const getRandomInt = (rangeL, rangeH) =>{
 }
 
 let totalCounts = 0;
-let countLimit = 5;
+let countLimit = 4;
 let branches = getRandomInt(MIN_BRANCHES, MAX_BRANCHES);
 
 let color = `hsl(${Math.random()*360}, 100%, 50%)`
