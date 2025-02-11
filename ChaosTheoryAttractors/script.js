@@ -109,48 +109,47 @@ let dzdt = (x, y, z) => {
 
 //Main function
 const proceed = (k) => {
-  for (let i = 0; i < k; i++) {
-    a = a
-      .then(() => {
-        if (state == 0) {
-          command(move, normalizeX(x), normalizeY(z), { r: r, g: g, b: b });
-        }
-        if (state == 1) {
-          command(
-            move,
-            normalizeX(y) * 1.86 - normalizeX(x) * 0.86,
-            normalizeY(z),
-            { r: r, g: g, b: b }
-          );
-        }
-      })
-      .then(() => {
-        return new Promise((resolve) => {
-          //calculate rate of change
-          let dfxdt = dxdt(x, y, z);
-          let dfydt = dydt(x, y, z);
-          let dfzdt = dzdt(x, y, z);
+  setInterval(() => {
+    a = a.then(() => {
+      if (state == 0) {
+        command(move, normalizeX(x), normalizeY(z), { r: r, g: g, b: b });
+      }
+      if (state == 1) {
+        command(
+          move,
+          normalizeX(y) * 1.86 - normalizeX(x) * 0.86,
+          normalizeY(z),
+          { r: r, g: g, b: b }
+        );
+      }
 
-          //find velocity to calculate color
-          let vel = (dfxdt ** 2 + dfydt ** 2 + dfzdt ** 2) ** 0.5 / unitVel;
-          r = Math.round(240 * vel);
-          b = Math.round(240 * (1.5 - vel));
+      let kx1 = dxdt(x, y, z);
+      let ky1 = dydt(x, y, z);
+      let kz1 = dzdt(x, y, z);
 
-          // x + dx <==> x + dxdt *dt
-          x = x + dfxdt * dt;
-          y = y + dfydt * dt;
-          z = z + dfzdt * dt;
-          if (ff == 1) {
-            //no delay set. unstable as it consumes all available processing power to speed steps
-            resolve();
-          } else {
-            //for stable performance, delay is set.
-            setTimeout(resolve, timeDelay);
-          }
-        });
-      });
-  }
+      let kx2 = dxdt(x + (kx1 * dt) / 2, y + (ky1 * dt) / 2, z + (kz1 * dt) / 2);
+      let ky2 = dydt(x + (kx1 * dt) / 2, y + (ky1 * dt) / 2, z + (kz1 * dt) / 2);
+      let kz2 = dzdt(x + (kx1 * dt) / 2, y + (ky1 * dt) / 2, z + (kz1 * dt) / 2);
+
+      let kx3 = dxdt(x + (kx2 * dt) / 2, y + (ky2 * dt) / 2, z + (kz2 * dt) / 2);
+      let ky3 = dydt(x + (kx2 * dt) / 2, y + (ky2 * dt) / 2, z + (kz2 * dt) / 2);
+      let kz3 = dzdt(x + (kx2 * dt) / 2, y + (ky2 * dt) / 2, z + (kz2 * dt) / 2);
+
+      let kx4 = dxdt(x + kx3 * dt, y + ky3 * dt, z + kz3 * dt);
+      let ky4 = dydt(x + kx3 * dt, y + ky3 * dt, z + kz3 * dt);
+      let kz4 = dzdt(x + kx3 * dt, y + ky3 * dt, z + kz3 * dt);
+
+      x = x + (dt / 6) * (kx1 + 2 * kx2 + 2 * kx3 + kx4);
+      y = y + (dt / 6) * (ky1 + 2 * ky2 + 2 * ky3 + ky4);
+      z = z + (dt / 6) * (kz1 + 2 * kz2 + 2 * kz3 + kz4);
+
+      let vel = ((kx1 ** 2 + ky1 ** 2 + kz1 ** 2) ** 0.5) / unitVel;
+      r = Math.round(240 * vel);
+      b = Math.round(240 * (1.5 - vel));
+    });
+  })
 };
+
 
 //Depending on which attractor is called, different normalization equations, differential equations and time steps are used
 const lorenz = () => {
@@ -160,7 +159,7 @@ const lorenz = () => {
   z = 25.41;
   state = 0;
 
-  std_dt = 0.003;
+  std_dt = 0.01;
   dt = std_dt;
   unitVel = 100;
   normalizeX = (x) => {
@@ -191,7 +190,7 @@ const chen = () => {
   z = 12.51;
   state = 0;
 
-  std_dt = 0.0004; //Chen attractor is more sensitive
+  std_dt = 0.001; //Chen attractor is more sensitive
   dt = std_dt;
   unitVel = 1500;
 
@@ -226,7 +225,7 @@ const halvorsen = () => {
   z = 2.04;
   state = 1;
 
-  std_dt = 0.002; //Chen attractor is more sensitive
+  std_dt = 0.02; //Chen attractor is more sensitive
   dt = std_dt;
   unitVel = 60;
   let selfScaleFactor = 1.5
@@ -263,10 +262,10 @@ const fourWing = () => {
   z = 0.04;
   state = 0;
 
-  std_dt = 0.05;
+  std_dt = 0.1;
   dt = std_dt;
-  unitVel = 1.5;
-  let selfScaleFactor = 1.5
+  unitVel = 0.5;
+  const selfScaleFactor = 1.5
 
   normalizeX = (t) => {
     return window.innerWidth / (2 * 1.36) + 100 * scaleFactor * (selfScaleFactor*t + 2);
@@ -289,11 +288,11 @@ const fourWing = () => {
     return -z - x * y;
   };
 
-  proceed(Math.round(100000 * scaleFactor ** 0.2));
+  proceed(Math.round(10000000 * scaleFactor ** 0.2));
 };
-let ranVal = Math.random();
+let ranVal = Math.random()+100;
 if(ranVal>0.5){
-  ranVal = Math.random();
+  ranVal = Math.random()-1;
   if(ranVal>0.5){
     lorenz();
   }
