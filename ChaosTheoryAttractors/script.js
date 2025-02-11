@@ -167,7 +167,7 @@ const lorenz = () => {
     return window.innerWidth / 2 + 30 * scaleFactor * x;
   };
   normalizeY = (y) => {
-    return window.innerHeight / 2 - 18 * scaleFactor * (y - 25 * scaleFactor);
+    return window.innerHeight / 2 +100- 18 * scaleFactor * (y - 25 * scaleFactor);
   };
   prev_pos = { x: normalizeX(y), y: normalizeY(z) };
 
@@ -229,12 +229,13 @@ const halvorsen = () => {
   std_dt = 0.002; //Chen attractor is more sensitive
   dt = std_dt;
   unitVel = 60;
+  let selfScaleFactor = 1.5
 
   normalizeX = (t) => {
-    return window.innerWidth / (2 * 1.36) + 10 * scaleFactor * (t + 20);
+    return window.innerWidth / (2 * 1.36) + 10 * scaleFactor * (selfScaleFactor*t + 20);
   };
   normalizeY = (t) => {
-    return window.innerHeight / (2 * 1.36) - 20 * scaleFactor * t;
+    return window.innerHeight / (2 * 1.36) - 20 * scaleFactor * selfScaleFactor*t;
   };
   prev_pos = { x: normalizeX(y), y: normalizeY(z) };
 
@@ -265,12 +266,13 @@ const fourWing = () => {
   std_dt = 0.05;
   dt = std_dt;
   unitVel = 1.5;
+  let selfScaleFactor = 1.5
 
   normalizeX = (t) => {
-    return window.innerWidth / (2 * 1.36) + 100 * scaleFactor * (t + 2);
+    return window.innerWidth / (2 * 1.36) + 100 * scaleFactor * (selfScaleFactor*t + 2);
   };
   normalizeY = (t) => {
-    return window.innerHeight / (2 * 1.36) - 100 * scaleFactor * (t - 2);
+    return window.innerHeight / (2 * 1.8) - 100 * scaleFactor * (selfScaleFactor*t - 2);
   };
   prev_pos = {
     x: normalizeX(0.8 * x + 0.14 * y - 0.5 * z),
@@ -289,6 +291,25 @@ const fourWing = () => {
 
   proceed(Math.round(100000 * scaleFactor ** 0.2));
 };
+let ranVal = Math.random();
+if(ranVal>0.5){
+  ranVal = Math.random();
+  if(ranVal>0.5){
+    lorenz();
+  }
+  else{
+    halvorsen();
+  }
+}
+else{
+  ranVal = Math.random();
+  if(ranVal>0.5){
+    chen();
+  }
+  else{
+    fourWing();
+  }
+}
 
 document.getElementById("but1").addEventListener("click", ffBut);
 document.getElementById("but2").addEventListener("click", speedUp);
