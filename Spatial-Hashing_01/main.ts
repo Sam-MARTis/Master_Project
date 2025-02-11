@@ -14,7 +14,7 @@ const BACKGROUND_COLOR = "black";
 const SCREEN_WIDTH = canvas.width;
 const SCREEN_HEIGHT = canvas.height;
 
-const CALC_TO_DISPLAY_RATIO = 70;
+const CALC_TO_DISPLAY_RATIO = 20;
 
 //Universe
 const GRAVITY = 1000;
