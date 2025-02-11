@@ -135,6 +135,7 @@ const decideAuto = () =>{
 
     }
 }
+// decideAuto()
 
 let autoBut = document.getElementById("checkAuto");
 let rotateBut = document.getElementById("checkRotate");
@@ -146,7 +147,8 @@ autoBut.addEventListener('click', decideAuto )
 // setInterval(randomize, 200);
 
 
-
+autoNow = setInterval(randomize, 1000);
+        console.log('auto mode');
 
 
 
