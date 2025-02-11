@@ -7,6 +7,8 @@ let paramValues = new Object();
 let rotateNow;
 let autoNow;
 let devicePixelRatio;
+const MIN_BRANCHES = 4;
+const MAX_BRANCHES = 16;
 
 
 
@@ -16,7 +18,7 @@ const getRandomInt = (rangeL, rangeH) =>{
 
 let totalCounts = 0;
 let countLimit = 5;
-let branches = getRandomInt(2, 8);
+let branches = getRandomInt(MIN_BRANCHES, MAX_BRANCHES);
 
 let color = `hsl(${Math.random()*360}, 100%, 50%)`
 let randomizeButton = document.getElementById('randomize');
@@ -99,11 +101,11 @@ setInterval(incSize, 10)
 const randomize = () =>{
     ctx.clearRect(0, 0, window.width, window.height);
     
-    let newBranches = 2+ getRandomInt(0, 8);
+    let newBranches =getRandomInt(MIN_BRANCHES, MAX_BRANCHES);
     color = `hsl(${Math.random()*360}, 100%, 50%)`;
     offset = 3.14*(Math.random()>0.5);
     while (newBranches== branches){
-        newBranches = 2+ +getRandomInt(0, 8);
+        newBranches = getRandomInt(MIN_BRANCHES, MAX_BRANCHES);
     }
     branches = newBranches;
     resetParamValues()
