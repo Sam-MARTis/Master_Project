@@ -7,8 +7,8 @@ let paramValues = new Object();
 let rotateNow;
 let autoNow;
 let devicePixelRatio;
-const MIN_BRANCHES = 4;
-const MAX_BRANCHES = 16;
+const MIN_BRANCHES = 2;
+const MAX_BRANCHES = 6;
 
 
 
@@ -17,7 +17,7 @@ const getRandomInt = (rangeL, rangeH) =>{
 }
 
 let totalCounts = 0;
-let countLimit = 4;
+let countLimit = 5;
 let branches = getRandomInt(MIN_BRANCHES, MAX_BRANCHES);
 
 let color = `hsl(${Math.random()*360}, 100%, 50%)`
@@ -43,8 +43,8 @@ const resetParamValues = () => {
     }
 }
 const rotate =()=>{
-    ctx.rotate(10)
-    // reset();
+    ctx.rotate(1 * Math.PI/180)
+    reset();
 }
 window.onload = () => {
     canvas =document.getElementById('canvas1');
@@ -64,7 +64,7 @@ window.onload = () => {
     
     
     reset();
-    rotateNow=setInterval(rotate, 100);
+    // rotateNow=setInterval(rotate, 10);
     
 };
 
@@ -115,7 +115,7 @@ const randomize = () =>{
 const decideRotation = () =>{
     if(rotateBut.checked){
         clearInterval(rotateNow);
-        rotateNow = setInterval(rotate, 100);
+        rotateNow = setInterval(rotate, 10);
 
     }
     else{
@@ -189,7 +189,6 @@ class Fractal {
         //     this.scaleFactorWidth = 0.9;
         // }
         console.log(this.length);
-        this.phase = 100
     }
 
     drawAngle = (angle, posx, posy, length) => {
@@ -228,10 +227,8 @@ class Fractal {
     }
     callAnimation(){
         for (let i = 0; i < branches; i++) {
-            this.animate(offset= phase+this.offset+ (i* 6.28/this.branches));
+            this.animate(offset= this.offset+ (i* 6.28/this.branches));
             }
     }
 
 }
-phase = 1
-// setInterval(()=>{phase+=0.01}, 100)
