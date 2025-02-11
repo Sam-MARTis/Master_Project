@@ -290,9 +290,9 @@ const fourWing = () => {
 
   proceed(Math.round(10000000 * scaleFactor ** 0.2));
 };
-let ranVal = Math.random()+100;
+let ranVal = Math.random();
 if(ranVal>0.5){
-  ranVal = Math.random()-1;
+  ranVal = Math.random();
   if(ranVal>0.5){
     lorenz();
   }
