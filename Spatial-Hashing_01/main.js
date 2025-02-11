@@ -6,8 +6,8 @@ canvas.height = window.innerHeight * devicePixelRatio;
 const ctx = canvas.getContext("2d");
 //CONSTANTS
 //Screen and background
-const SCREEN_HEIGHT_OCCUPANCY = 1.0;
-const SCREEN_WIDTH_OCCUPANCY = 0.03;
+const SCREEN_HEIGHT_OCCUPANCY = 0.6;
+const SCREEN_WIDTH_OCCUPANCY = 0.6;
 const BACKGROUND_COLOR = "black";
 const SCREEN_WIDTH = canvas.width;
 const SCREEN_HEIGHT = canvas.height;
@@ -16,13 +16,13 @@ const CALC_TO_DISPLAY_RATIO = 70;
 const GRAVITY = 1000;
 const dt = 1 / 100000;
 const EPSILON = 0.0001;
-const WALL_DAMPING = 0.1;
-const INTERNAL_DAMPING = 0.5;
+const WALL_DAMPING = 1;
+const INTERNAL_DAMPING = 1.000;
 //Entities
-const PARTICLE_COUNT = 3000;
-const PARTICLE_RADIUS = Math.sqrt(SCREEN_HEIGHT * SCREEN_WIDTH) / 800;
+const PARTICLE_COUNT = 1520;
+const PARTICLE_RADIUS = Math.sqrt(SCREEN_HEIGHT * SCREEN_WIDTH) / 120;
 const PARTICLE_COLOR = "red";
-const PARTICLE_VELOCITY = 15;
+const PARTICLE_VELOCITY = 25000;
 // Early calculation
 const ARENA_WIDTH_PIXELS = SCREEN_WIDTH * SCREEN_WIDTH_OCCUPANCY;
 const ARENA_HEIGHT_PIXELS = SCREEN_HEIGHT * SCREEN_HEIGHT_OCCUPANCY;
