@@ -1,0 +1,14 @@
+canvas{
+    background-color: black;
+    position: absolute;
+
+}
+body{
+    margin: 0px;
+    position: absolute;
+}
+*{
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+}
